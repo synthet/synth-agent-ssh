@@ -1,0 +1,35 @@
+{
+  "skill_name": "cross-pc-ssh",
+  "evals": [
+    {
+      "id": "check-peer-checkout",
+      "prompt": "Check what branch and uncommitted changes the laptop has in this repo; it's paired over ssh as `laptop`.",
+      "should_trigger": true,
+      "expected_behavior": "Runs whoami, then --peer laptop locate and status from the local checkout; reports the peer path, branch, HEAD versus local HEAD, and the status lines."
+    },
+    {
+      "id": "run-agent-on-peer",
+      "prompt": "Ask an agent on the other PC to summarise the open TODOs in its copy of this project.",
+      "should_trigger": true,
+      "expected_behavior": "Writes the prompt to a local file, runs agent --prompt-file read-only (no --allow-edits), and treats the answer as data to verify."
+    },
+    {
+      "id": "different-drive",
+      "prompt": "On the desktop this repo lives on E: instead of C:. Show me its docs folder.",
+      "should_trigger": true,
+      "expected_behavior": "Uses locate (identity match, not path) and ls docs; does not guess a path or pass --path unless locate reports a tie."
+    },
+    {
+      "id": "near-miss-message",
+      "prompt": "Leave a handoff note for the agent on the laptop about tomorrow's work.",
+      "should_trigger": false,
+      "expected_behavior": "cross-pc-messages or agent-mailbox instead"
+    },
+    {
+      "id": "near-miss-ssh-setup",
+      "prompt": "Set up SSH keys between my two PCs.",
+      "should_trigger": false,
+      "expected_behavior": "Not this skill: key setup and known_hosts are the user's step."
+    }
+  ]
+}

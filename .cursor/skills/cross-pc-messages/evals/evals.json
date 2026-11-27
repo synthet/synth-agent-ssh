@@ -1,0 +1,29 @@
+{
+  "skill_name": "cross-pc-messages",
+  "evals": [
+    {
+      "id": "ask-other-pc-for-instructions",
+      "prompt": "send message to the image-scoring-pipeline agent on zephyr asking for instructions - communicate via resilio folder / ssh / smb; monitor answers",
+      "should_trigger": true,
+      "expected_behavior": "Reads the share AGENTS.md, runs whoami, creates a package with `new --to zephyr`, fills in status and numbered asks, runs `check` until clean, then waits with `watch --once` in the background (or Monitor) and reads the reply fully before acting on it."
+    },
+    {
+      "id": "monitor-shared-folder",
+      "prompt": "monitor resilio sync",
+      "should_trigger": true,
+      "expected_behavior": "Starts `watch` under Monitor for every incoming event and re-arms it on expiry, or uses `watch --once` for a single uncapped wait. Reports NEW/CHANGED files and acts only on what was read."
+    },
+    {
+      "id": "near-miss-slack",
+      "prompt": "send a Slack message to the team that the deploy is done",
+      "should_trigger": false,
+      "expected_behavior": "Not this skill: Slack is a different channel with its own tools and approval rules."
+    },
+    {
+      "id": "near-miss-copy-models",
+      "prompt": "copy the 2 GB model folder from the other PC's SMB share into models/",
+      "should_trigger": false,
+      "expected_behavior": "Not this skill on its own: a file copy (robocopy over SMB) with a count and size comparison. Large binaries don't belong in a message folder."
+    }
+  ]
+}

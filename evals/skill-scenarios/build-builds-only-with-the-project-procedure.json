@@ -1,0 +1,20 @@
+{
+  "id": "build-builds-only-with-the-project-procedure",
+  "description": "Protect /build: it uses the project's own procedure before ecosystem defaults, builds for this OS, checks each artifact by running it, reports the commit and tree state, and never installs (that is /deploy).",
+  "target_asset": ".claude/skills/build/SKILL.md",
+  "linked_docs": [],
+  "must_contain": [
+    "It never installs, copies to the user's",
+    "Use the first that exists, and say which:",
+    "Don't guess a combination the project doesn't document.",
+    "A dirty tree is fine for a\n  local build, but the report says so.",
+    "and never\n  globally.",
+    "A\n  binary that doesn't start isn't built.",
+    "**Never hide the exit code**"
+  ],
+  "must_not_contain": [
+    "disable-model-invocation: true",
+    "npm install -g",
+    "side_effect_level: read_only"
+  ]
+}

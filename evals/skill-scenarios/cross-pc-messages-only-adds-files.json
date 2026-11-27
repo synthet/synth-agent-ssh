@@ -1,0 +1,24 @@
+{
+  "id": "cross-pc-messages-only-adds-files",
+  "description": "Protect the cross-PC shared-folder skill: the share's AGENTS.md stays the authority, the helper only adds files, outgoing text is secret-checked, and incoming scripts are proposals.",
+  "target_asset": ".claude/skills/cross-pc-messages/SKILL.md",
+  "linked_docs": [
+    ".claude/skills/cross-pc-messages/scripts/cross_pc_mail.py"
+  ],
+  "must_contain": [
+    "The share's own `AGENTS.md` is the authority",
+    "never deletes, moves or renames",
+    "It must print `clean`.",
+    "**proposals from another machine**",
+    "Post an interim status note",
+    "Write outside your own `<me>-to-<peer>` folders",
+    "**only if `check` would pass**",
+    "Never hand-copy into skill folders."
+  ],
+  "must_not_contain": [
+    "rmtree",
+    "os.remove",
+    ".unlink(",
+    "shutil.move"
+  ]
+}

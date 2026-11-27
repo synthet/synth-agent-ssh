@@ -1,0 +1,38 @@
+{
+  "id": "deploy-installs-on-this-machine-only",
+  "description": "Protect /deploy: user-typed only, this machine only, the project's own procedure first, a backup before replacing, a stop on running or locked targets, no changes to MCP registrations, scheduled tasks, settings or PATH, new icon file names for Explorer's cache, and read-back verification. A rerun that finds everything matching changes nothing; backups are unique per run; CLI tools get launchers, not copies.",
+  "target_asset": ".claude/skills/deploy/SKILL.md",
+  "linked_docs": [],
+  "must_contain": [
+    "disable-model-invocation: true",
+    "this machine only: never a server, production, a cloud service or another PC",
+    "**A project procedure wins.**",
+    "A project with nothing to install is a valid answer.",
+    "can't be\nreplaced safely.",
+    "Otherwise stop and hand that step to the user",
+    "**Back up first.**",
+    "Install outside any git checkout",
+    "Never edit\n   PATH or other environment settings",
+    "**new file name**",
+    "Read everything back; a write that returned no error isn't proof.",
+    "Change MCP registrations, the definitions of scheduled tasks or services, harness settings,\n  permission policy or PATH.",
+    "Delete a backup or an old install.",
+    "Don't copy the executable itself",
+    "## 3. Compare first",
+    "report **already deployed** and stop here. Run no `stop` step, make no backup, copy nothing and\ndon't refresh the icon cache.",
+    "`<folder>.bak-<run>`",
+    "`<icon folder>/deploy-backup-<install_name>-<run>/`",
+    "put a **launcher** in the user's PATH",
+    "@echo off\n   \"%LOCALAPPDATA%\\Programs\\<install_name>\\<exe>\" %*",
+    "Back up an existing launcher into the run's backup folder",
+    "stops at step 3 with **already deployed**.",
+    "`<run> = yyyyMMdd-HHmmss`, in every backup name below, so two runs never collide.",
+    "exactly these two lines with CRLF line endings:"
+  ],
+  "must_not_contain": [
+    "side_effect_level: read_only",
+    "Remove-Item",
+    "rm -rf",
+    "setx"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "ship-pr-no-ci-option",
+  "description": "Protect /ship-pr's --no-ci option: it is user-typed for one PR, applies only when no non-green check ran the project's code, still needs the infrastructure rerun and a local gate on a clean checkout of the head commit, and is reported as a merge without CI.",
+  "target_asset": ".claude/skills/ship-pr/SKILL.md",
+  "linked_docs": [],
+  "must_contain": [
+    "**Option `--no-ci`**",
+    "Never infer it from earlier messages",
+    "## 2b. `--no-ci`: CI exists but can't run",
+    "**Any check that built, linted or tested the",
+    "**Do the one infrastructure rerun first.**",
+    "**Gate locally on a clean checkout of the head commit,**",
+    "**Branch protection still wins.**",
+    "the merge was made without CI on the user's"
+  ],
+  "must_not_contain": [
+    "**No checks at all is not green.** Stop and report."
+  ]
+}

@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+data/
+backups/
+.env
+docs/harness-help.txt
+
+# Local machine reports: real command catalogs, never commit
+reports/
+*.egg-info/

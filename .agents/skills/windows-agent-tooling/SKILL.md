@@ -1,0 +1,106 @@
+---
+name: windows-agent-tooling
+description: Use for native Windows agent workflows involving PowerShell, winget, Cursor IDE, Docker Desktop, path conventions, and decisions about when WSL is optional. Apply when the environment or user request is Windows-specific.
+capability: "windows-agent-tooling agent asset workflow"
+side_effect_level: local_write
+approval_required: false
+requires_tools: "See asset body for tool requirements."
+output_schema: "Markdown report or documented command output."
+risk_class: medium
+---
+
+# Windows agent tooling
+
+## Purpose
+
+Effective agent work on Windows host without unnecessary WSL hops.
+
+## When to Use
+
+- User workspace is native Windows
+- Simple search, edit, gh, uv, pnpm tasks
+- Docker Desktop on Windows
+
+## Required Tools
+
+PowerShell, `git`, `rg`, `fd`, `gh`, optional Docker Desktop.
+
+## Install
+
+Install blocks are shared — See [install-blocks.md](../cli-tools-overview/references/install-blocks.md).
+
+### Windows PowerShell
+
+Use winget blocks from the reference when provisioning a new machine.
+
+### WSL2 Ubuntu
+
+Use apt/curl blocks from the reference; symlink `fdfind` → `fd` if needed.
+
+### macOS
+
+Use Homebrew blocks from the reference.
+
+
+## Common Commands
+
+```powershell
+git status --short
+rg "pattern" . --glob '!node_modules' -n --max-count 30
+fd -e md .
+Get-Content .\README.md -TotalCount 80
+gh pr list --limit 10
+```
+
+## Host / WSL split
+
+```text
+Windows host:
+  Cursor / VS Code / Claude Desktop / Docker Desktop / local LLM apps
+  Simple rg/fd, GitHub CLI, uv/pnpm on native paths
+
+WSL2 Ubuntu:
+  repositories (optional), ast-grep, MCP stdio servers, CI-like tests
+```
+
+When native Windows is enough: simple search, editing, GitHub CLI, Python with `uv`, Node with `pnpm`.
+
+When WSL2 is better: Bash-heavy repos, Docker Compose Linux paths, MCP Unix servers, monorepo CI parity.
+
+Full diagram: [windows-wsl-split.md](../cli-tools-overview/references/windows-wsl-split.md).
+
+## Agent-Safe Patterns
+
+- Avoid mixing `D:\` and `/mnt/d/` in one workflow.
+- In Git Bash, prefix `MSYS_NO_PATHCONV=1` to `docker exec`/`docker run` commands that pass container paths (`-w /app`, `/data/...`); otherwise MSYS rewrites them to Windows paths ("Cwd must be an absolute path").
+- Use the same prefix for `git show <ref>:<path>`. MSYS can rewrite the argument into something like `origin\main;.agent\...`, and a pipeline can hide the failure behind a plausible result such as a `0` count.
+- See [bounded-output-patterns.md](../cli-tools-overview/references/bounded-output-patterns.md).
+
+## Commands Requiring Confirmation
+
+See [commands-requiring-confirmation.md](../cli-tools-overview/references/commands-requiring-confirmation.md).
+
+## Troubleshooting
+
+- CLI upgrade still launches an old version, a launcher is blocked, or login differs between
+  terminals: follow [CLI resolution and host context](references/cli-resolution.md). Inspect
+  shell overrides and installation ownership before reinstalling or proposing policy changes.
+- Docker not running: start Docker Desktop before compose commands.
+- `node -e` with a regex, backslashes or nested quotes: PowerShell and Git Bash both mangle the escapes, and Node reports `Unterminated regexp literal` or `Invalid hexadecimal escape sequence`. Write the script to a `.js` or `.mjs` file and run `node` on that file.
+- Python in terminal sandboxes: Microsoft Store Python execution aliases (`WindowsApps\python.exe`) fail under process isolation with `ResourceUnavailable`. For sandboxed inspection/scripting, use native PowerShell cmdlets (`Select-String`, `ConvertFrom-Json`, `Get-Content`); invoke `python.exe` with sandbox bypass approval or use standalone Python/uv executables.
+
+## Windows Notes
+
+- Primary environment for this skill.
+- Optional fff-mcp at `%LOCALAPPDATA%\fff-mcp\bin\fff-mcp.exe`.
+
+## WSL2 Notes
+
+- Escalate to [wsl2-agent-tooling](../wsl2-agent-tooling/SKILL.md) when tools fail on native Windows.
+- See [windows-wsl-split.md](../cli-tools-overview/references/windows-wsl-split.md).
+
+## Verification Checklist
+
+- [ ] Core tools available in PowerShell
+- [ ] Chosen Windows vs WSL for this task
+- [ ] CLI resolution fixes verified with the bare command in fresh sessions of the affected shells

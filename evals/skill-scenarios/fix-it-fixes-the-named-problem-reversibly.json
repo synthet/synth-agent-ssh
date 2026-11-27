@@ -1,0 +1,24 @@
+{
+  "id": "fix-it-fixes-the-named-problem-reversibly",
+  "description": "Protect fix-it: it fixes only the problem the last report named, diagnoses read-only first, backs up before overwriting, verifies what the user sees, stays inside its limits, and hands blocked steps back as paste-exact commands.",
+  "target_asset": ".claude/skills/fix-it/SKILL.md",
+  "linked_docs": [],
+  "must_contain": [
+    "fix the problem your last message named",
+    "If your last message named no problem, say so and stop.",
+    "Look first, read-only.",
+    "The check is the user's view, not your",
+    "Never overwrite without a copy",
+    "add a new file instead of rewriting the old one",
+    "deleting it is the",
+    "don't reword the command",
+    "the full 40-character SHA",
+    "Don't drive a GUI on a desktop the user is using."
+  ],
+  "must_not_contain": [
+    "disable-model-invocation: true",
+    "side_effect_level: read_only",
+    "git push --force",
+    "rm -rf"
+  ]
+}
