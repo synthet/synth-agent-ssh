@@ -57,8 +57,8 @@ in v1.
   checkout, exit code and output size, never file contents or prompts.
 - **AC-8** The vendored helper shall carry the framework commit it came from. A check (`scripts/check_vendor.py`)
   shall fail when its hash differs from that commit's file.
-- **AC-9** The tracked files shall contain no host names, IPs, user names or machine paths. Config and audit
-  log live in the user's profile, outside the repo.
+- **AC-9** The tracked files shall contain no host names, IPs, user names or machine paths. The config
+  (`~/.config/cross-pc-ssh.json`, shared with the helper) and the audit log live in the user's profile, outside the repo.
 
 ## Assumptions and dependencies
 
@@ -66,8 +66,12 @@ in v1.
 - The helper's CLI (verbs, exit codes 2, 3, 4) stays stable. The vendor check catches drift.
 - Peers are Windows PCs with Windows PowerShell and git, as the helper requires.
 
+## Decisions (owner, 2026-11-27)
+
+- **Config:** reuse the helper's `~/.config/cross-pc-ssh.json` (override `CROSS_PC_SSH_CONFIG`), adding a `local_roots` list of folders the server may use as local checkouts. Its `peers` keys are the allowlist for AC-3. One file, so the helper and the server can't disagree about peers.
+- **License:** MIT (`LICENSE` at the repo root).
+- **`ssh_agent` permission:** allowed like the other read-only tools, with no extra prompt by default. The setup docs (T-5) still say it runs a model on the peer and uses the peer's quota, so an owner who wants a prompt can add an `ask` rule.
+
 ## Open questions
 
-- OPEN QUESTION: config location. `~/.config/synth-agent-ssh.json`, or reuse the helper's `~/.config/cross-pc-ssh.json` plus a `local_roots` key?
-- OPEN QUESTION: license for the public repo (the sibling public repos have none set).
-- OPEN QUESTION: whether `ssh_agent` should need its own permission rule by default (`ask`), since it runs a model on the peer and uses its quota.
+None.
