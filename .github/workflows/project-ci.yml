@@ -16,11 +16,17 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
       - name: Build
-        run: pip install -e .
+        run: pip install -e . ruff pytest
 
       - name: Lint
-        run: ruff check .
+        # Project code only; the seeded agent scaffolding is linted by the framework.
+        run: ruff check src tests
 
       - name: Test
         run: python -m pytest
